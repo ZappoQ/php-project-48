@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1787864336">
-  <project timestamp="1787864336">
+<coverage generated="1787864811">
+  <project timestamp="1787864811">
     <file name="/Users/dom/php-project-48/src/Builder.php">
       <line num="7" type="stmt" count="5"/>
       <line num="8" type="stmt" count="5"/>
