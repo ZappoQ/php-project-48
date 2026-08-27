@@ -251,5 +251,64 @@ group1: {
 
         $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
     }
-}
+    public function testGenDiffJsonFlat(): void
+    {
+        $data1 = parseFile($this->getFixturePath('flat1.json'));
+        $data2 = parseFile($this->getFixturePath('flat2.json'));
 
+        $expected = json_encode([
+            'follow' => ['type' => 'removed', 'value' => false],
+            'host' => ['type' => 'unchanged', 'value' => 'hexlet.io'],
+            'proxy' => ['type' => 'removed', 'value' => '123.234.53.22'],
+            'timeout' => ['type' => 'changed', 'oldValue' => 50, 'newValue' => 20],
+            'verbose' => ['type' => 'added', 'value' => true],
+        ], JSON_PRETTY_PRINT);
+
+        $this->assertEquals($expected, genDiff($data1, $data2, 'json'));
+    }
+
+    public function testGenDiffJsonNested(): void
+    {
+        $data1 = parseFile($this->getFixturePath('nested1.json'));
+        $data2 = parseFile($this->getFixturePath('nested2.json'));
+
+        $expected = json_encode([
+            'common' => [
+                'type' => 'nested',
+                'children' => [
+                    'follow' => ['type' => 'added', 'value' => false],
+                    'setting1' => ['type' => 'unchanged', 'value' => 'Value 1'],
+                    'setting2' => ['type' => 'removed', 'value' => 200],
+                    'setting3' => ['type' => 'changed', 'oldValue' => true, 'newValue' => null],
+                    'setting4' => ['type' => 'added', 'value' => 'blah blah'],
+                    'setting5' => ['type' => 'added', 'value' => ['key5' => 'value5']],
+                    'setting6' => [
+                        'type' => 'nested',
+                        'children' => [
+                            'doge' => [
+                                'type' => 'nested',
+                                'children' => [
+                                    'wow' => ['type' => 'changed', 'oldValue' => '', 'newValue' => 'so much'],
+                                ],
+                            ],
+                            'key' => ['type' => 'unchanged', 'value' => 'value'],
+                            'ops' => ['type' => 'added', 'value' => 'vops'],
+                        ],
+                    ],
+                ],
+            ],
+            'group1' => [
+                'type' => 'nested',
+                'children' => [
+                    'baz' => ['type' => 'changed', 'oldValue' => 'bas', 'newValue' => 'bars'],
+                    'foo' => ['type' => 'unchanged', 'value' => 'bar'],
+                    'nest' => ['type' => 'changed', 'oldValue' => ['key' => 'value'], 'newValue' => 'str'],
+                ],
+            ],
+            'group2' => ['type' => 'removed', 'value' => ['abc' => 12345, 'deep' => ['id' => 45]]],
+            'group3' => ['type' => 'added', 'value' => ['deep' => ['id' => ['number' => 45]], 'fee' => 100500]],
+        ], JSON_PRETTY_PRINT);
+
+        $this->assertEquals($expected, genDiff($data1, $data2, 'json'));
+    }
+}

@@ -1,4 +1,4 @@
-COVERAGE_MIN = 45
+COVERAGE_MIN = 55
 
 install:
 	composer install
