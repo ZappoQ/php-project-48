@@ -3,8 +3,15 @@
 namespace ZappoQ\Tests;
 
 use PHPUnit\Framework\TestCase;
+use function ZappoQ\parseFile;
+use function ZappoQ\genDiff;
+use function ZappoQ\isJsonFile;
+use function ZappoQ\isYamlFile;
+use function ZappoQ\Formatters\stringify;
 
 require_once __DIR__ . '/../src/Parsing.php';
+require_once __DIR__ . '/../src/Builder.php';
+require_once __DIR__ . '/../src/Formatters/Stylish.php';
 require_once __DIR__ . '/../src/Differ.php';
 
 class DifferTest extends TestCase
@@ -14,72 +21,201 @@ class DifferTest extends TestCase
         return __DIR__ . '/fixtures/' . $filename;
     }
 
-    // Тест для JSON файлов
-    public function testGenDiffJson(): void
+    public function testGenDiffFlatJson(): void
     {
-        $data1 = \ZappoQ\parseFile($this->getFixturePath('file1.json'));
-        $data2 = \ZappoQ\parseFile($this->getFixturePath('file2.json'));
+        $data1 = parseFile($this->getFixturePath('flat1.json'));
+        $data2 = parseFile($this->getFixturePath('flat2.json'));
 
         $expected = '{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
+- follow: false
+  host: hexlet.io
+- proxy: 123.234.53.22
+- timeout: 50
++ timeout: 20
++ verbose: true
 }';
 
-        $this->assertEquals($expected, \ZappoQ\genDiff($data1, $data2));
+        $this->assertEquals($expected, genDiff($data1, $data2));
     }
 
-    // Тест для YAML файлов
-    public function testGenDiffYaml(): void
+    public function testGenDiffNestedJson(): void
     {
-        $data1 = \ZappoQ\parseFile($this->getFixturePath('file1.yml'));
-        $data2 = \ZappoQ\parseFile($this->getFixturePath('file2.yml'));
+        $data1 = parseFile($this->getFixturePath('nested1.json'));
+        $data2 = parseFile($this->getFixturePath('nested2.json'));
 
         $expected = '{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
+common: {
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+    setting6: {
+        doge: {
+            - wow: 
+            + wow: so much
+        }
+          key: value
+        + ops: vops
+    }
+}
+group1: {
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
+}
+- group2: { ... }
++ group3: { ... }
 }';
 
-        $this->assertEquals($expected, \ZappoQ\genDiff($data1, $data2));
+        $this->assertEquals($expected, genDiff($data1, $data2));
     }
 
-    // Тест для смешанных форматов (JSON + YAML)
+    public function testGenDiffNestedYaml(): void
+    {
+        $data1 = parseFile($this->getFixturePath('nested1.yml'));
+        $data2 = parseFile($this->getFixturePath('nested2.yml'));
+
+        $expected = '{
+common: {
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+    setting6: {
+        doge: {
+            - wow: 
+            + wow: so much
+        }
+          key: value
+        + ops: vops
+    }
+}
+group1: {
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
+}
+- group2: { ... }
++ group3: { ... }
+}';
+
+        $this->assertEquals($expected, genDiff($data1, $data2));
+    }
+
     public function testMixedFormats(): void
     {
-        $data1 = \ZappoQ\parseFile($this->getFixturePath('file1.json'));
-        $data2 = \ZappoQ\parseFile($this->getFixturePath('file2.yml'));
+        $data1 = parseFile($this->getFixturePath('nested1.json'));
+        $data2 = parseFile($this->getFixturePath('nested2.yml'));
 
         $expected = '{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
+common: {
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+    setting6: {
+        doge: {
+            - wow: 
+            + wow: so much
+        }
+          key: value
+        + ops: vops
+    }
+}
+group1: {
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
+}
+- group2: { ... }
++ group3: { ... }
 }';
 
-        $this->assertEquals($expected, \ZappoQ\genDiff($data1, $data2));
+        $this->assertEquals($expected, genDiff($data1, $data2));
     }
 
-    // Тест для одинаковых файлов
-    public function testGenDiffWithIdenticalFiles(): void
+    public function testIsJsonFile(): void
     {
-        $data = \ZappoQ\parseFile($this->getFixturePath('file1.json'));
+        $this->assertTrue(isJsonFile('file.json'));
+        $this->assertTrue(isJsonFile('file.JSON'));
+        $this->assertFalse(isJsonFile('file.yml'));
+        $this->assertFalse(isJsonFile('file.yaml'));
+        $this->assertFalse(isJsonFile('file.txt'));
+    }
 
-        $expected = '{
-    follow: false
-    host: hexlet.io
-    proxy: 123.234.53.22
-    timeout: 50
-}';
+    public function testIsYamlFile(): void
+    {
+        $this->assertTrue(isYamlFile('file.yml'));
+        $this->assertTrue(isYamlFile('file.yaml'));
+        $this->assertTrue(isYamlFile('file.YML'));
+        $this->assertFalse(isYamlFile('file.json'));
+        $this->assertFalse(isYamlFile('file.txt'));
+    }
 
-        $this->assertEquals($expected, \ZappoQ\genDiff($data, $data));
+    public function testParseFileNotFound(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches('/File not found:/');
+        parseFile('not_exists.json');
+    }
+
+    public function testParseInvalidJson(): void
+    {
+        $invalidJsonFile = $this->getFixturePath('invalid.json');
+        file_put_contents($invalidJsonFile, '{invalid json}');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches('/Invalid JSON in file:/');
+        parseFile($invalidJsonFile);
+
+        unlink($invalidJsonFile);
+    }
+
+    public function testParseUnsupportedFormat(): void
+    {
+        $unsupportedFile = $this->getFixturePath('test.txt');
+        file_put_contents($unsupportedFile, 'test content');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageMatches('/Unsupported file format:/');
+        parseFile($unsupportedFile);
+
+        unlink($unsupportedFile);
+    }
+
+    public function testStringify(): void
+    {
+        $this->assertEquals('true', stringify(true));
+        $this->assertEquals('false', stringify(false));
+        $this->assertEquals('null', stringify(null));
+        $this->assertEquals('123', stringify(123));
+        $this->assertEquals('test', stringify('test'));
+        $this->assertEquals('{ ... }', stringify(['key' => 'value']));
+        $this->assertEquals('{ ... }', stringify([]));
+    }
+
+    public function testGenDiffUnsupportedFormat(): void
+    {
+        $data1 = parseFile($this->getFixturePath('flat1.json'));
+        $data2 = parseFile($this->getFixturePath('flat2.json'));
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unsupported format: invalid');
+        genDiff($data1, $data2, 'invalid');
     }
 }

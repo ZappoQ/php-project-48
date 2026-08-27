@@ -5,8 +5,11 @@ ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use ZappoQ\parseFile;
-use ZappoQ\genDiff;
+// Подключаем файлы с функциями
+require_once __DIR__ . '/../src/Parsing.php';
+require_once __DIR__ . '/../src/Builder.php';
+require_once __DIR__ . '/../src/Formatters/Stylish.php';
+require_once __DIR__ . '/../src/Differ.php';
 
 $usage = <<<'USAGE'
 Generate diff
@@ -29,11 +32,13 @@ try {
     if (!$args['--help'] && !$args['--version']) {
         $firstFile = $args['<firstFile>'];
         $secondFile = $args['<secondFile>'];
+        $format = $args['--format'] ?? 'stylish';
 
-        $data1 = parseFile($firstFile);
-        $data2 = parseFile($secondFile);
+        // Используем полные имена с обратным слешем
+        $data1 = \ZappoQ\parseFile($firstFile);
+        $data2 = \ZappoQ\parseFile($secondFile);
 
-        echo genDiff($data1, $data2);
+        echo \ZappoQ\genDiff($data1, $data2, $format);
     }
 } catch (Exception $e) {
     echo $e->getMessage() . PHP_EOL;

@@ -11,7 +11,7 @@ function parseFile(string $filePath): array
     }
 
     $content = file_get_contents($filePath);
-
+    
     if (isJsonFile($filePath)) {
         $data = json_decode($content, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -19,7 +19,6 @@ function parseFile(string $filePath): array
         }
         return $data;
     } elseif (isYamlFile($filePath)) {
-        // Убираем PARSE_OBJECT_FOR_MAP, чтобы получить массив
         return Yaml::parse($content);
     } else {
         throw new \Exception("Unsupported file format: {$filePath}");
