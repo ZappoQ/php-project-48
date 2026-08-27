@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use ZappoQ\parseFile;
+use ZappoQ\genDiff;
+
+$usage = <<<'USAGE'
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+  -h --help                     Show this screen
+  -v --version                  Show version
+  --format <fmt>                Report format [default: stylish]
+
+USAGE;
+
+try {
+    $args = Docopt::handle($usage, ['version' => '1.0.0']);
+
+    if (!$args['--help'] && !$args['--version']) {
+        $firstFile = $args['<firstFile>'];
+        $secondFile = $args['<secondFile>'];
+
+        $data1 = parseFile($firstFile);
+        $data2 = parseFile($secondFile);
+
+        echo genDiff($data1, $data2);
+    }
+} catch (Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+    exit(1);
+}
