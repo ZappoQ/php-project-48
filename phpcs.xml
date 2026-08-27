@@ -4,4 +4,9 @@
     <file>src</file>
     <file>tests</file>
     <exclude-pattern>vendor/*</exclude-pattern>
+
+    <!-- Игнорируем require_once в тестах -->
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
 </ruleset>

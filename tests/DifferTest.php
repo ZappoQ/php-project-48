@@ -3,8 +3,9 @@
 namespace ZappoQ\Tests;
 
 use PHPUnit\Framework\TestCase;
-use ZappoQ\parseFile;
-use ZappoQ\genDiff;
+
+require_once __DIR__ . '/../src/Parsing.php';
+require_once __DIR__ . '/../src/Differ.php';
 
 class DifferTest extends TestCase
 {
@@ -15,8 +16,8 @@ class DifferTest extends TestCase
 
     public function testGenDiff(): void
     {
-        $data1 = parseFile($this->getFixturePath('file1.json'));
-        $data2 = parseFile($this->getFixturePath('file2.json'));
+        $data1 = \ZappoQ\parseFile($this->getFixturePath('file1.json'));
+        $data2 = \ZappoQ\parseFile($this->getFixturePath('file2.json'));
 
         $expected = '{
   - follow: false
@@ -27,12 +28,12 @@ class DifferTest extends TestCase
   + verbose: true
 }';
 
-        $this->assertEquals($expected, genDiff($data1, $data2));
+        $this->assertEquals($expected, \ZappoQ\genDiff($data1, $data2));
     }
 
     public function testGenDiffWithIdenticalFiles(): void
     {
-        $data = parseFile($this->getFixturePath('file1.json'));
+        $data = \ZappoQ\parseFile($this->getFixturePath('file1.json'));
 
         $expected = '{
     follow: false
@@ -41,6 +42,6 @@ class DifferTest extends TestCase
     timeout: 50
 }';
 
-        $this->assertEquals($expected, genDiff($data, $data));
+        $this->assertEquals($expected, \ZappoQ\genDiff($data, $data));
     }
 }

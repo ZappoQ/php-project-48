@@ -4,27 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc712a3487468b44b9b52cfb15e5f4f0",
+    "content-hash": "16fe94eb508d5cd4562ffb272fc8ddbd",
     "packages": [
         {
             "name": "docopt/docopt",
-            "version": "1.0.0",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/docopt/docopt.php.git",
-                "reference": "0720e1cd97b291a9be2c2da76440681a1530ae02"
+                "reference": "bcb963c87d61948919146d25c22ca0ab74896c24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/docopt/docopt.php/zipball/0720e1cd97b291a9be2c2da76440681a1530ae02",
-                "reference": "0720e1cd97b291a9be2c2da76440681a1530ae02",
+                "url": "https://api.github.com/repos/docopt/docopt.php/zipball/bcb963c87d61948919146d25c22ca0ab74896c24",
+                "reference": "bcb963c87d61948919146d25c22ca0ab74896c24",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.1.*"
             },
             "type": "library",
             "autoload": {
@@ -44,7 +41,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Port of Python's docopt for PHP 5.3",
+            "description": "Port of Python's docopt for PHP >=5.3",
             "homepage": "http://github.com/docopt/docopt.php",
             "keywords": [
                 "cli",
@@ -52,9 +49,9 @@
             ],
             "support": {
                 "issues": "https://github.com/docopt/docopt.php/issues",
-                "source": "https://github.com/docopt/docopt.php/tree/master"
+                "source": "https://github.com/docopt/docopt.php/tree/1.0.6"
             },
-            "time": "2015-05-17T09:44:21+00:00"
+            "time": "2025-01-20T00:35:03+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
