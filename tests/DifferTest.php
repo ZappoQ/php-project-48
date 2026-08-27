@@ -218,4 +218,38 @@ group1: {
         $this->expectExceptionMessage('Unsupported format: invalid');
         genDiff($data1, $data2, 'invalid');
     }
+
+    public function testGenDiffPlainFlatJson(): void
+    {
+        $data1 = parseFile($this->getFixturePath('flat1.json'));
+        $data2 = parseFile($this->getFixturePath('flat2.json'));
+
+        $expected = "Property 'follow' was removed\n"
+            . "Property 'proxy' was removed\n"
+            . "Property 'timeout' was updated. From 50 to 20\n"
+            . "Property 'verbose' was added with value: true";
+
+        $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
+    }
+
+    public function testGenDiffPlainNestedJson(): void
+    {
+        $data1 = parseFile($this->getFixturePath('nested1.json'));
+        $data2 = parseFile($this->getFixturePath('nested2.json'));
+
+        $expected = "Property 'common.follow' was added with value: false\n"
+            . "Property 'common.setting2' was removed\n"
+            . "Property 'common.setting3' was updated. From true to null\n"
+            . "Property 'common.setting4' was added with value: 'blah blah'\n"
+            . "Property 'common.setting5' was added with value: [complex value]\n"
+            . "Property 'common.setting6.doge.wow' was updated. From '' to 'so much'\n"
+            . "Property 'common.setting6.ops' was added with value: 'vops'\n"
+            . "Property 'group1.baz' was updated. From 'bas' to 'bars'\n"
+            . "Property 'group1.nest' was updated. From [complex value] to 'str'\n"
+            . "Property 'group2' was removed\n"
+            . "Property 'group3' was added with value: [complex value]";
+
+        $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
+    }
 }
+

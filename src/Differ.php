@@ -2,16 +2,17 @@
 
 namespace ZappoQ;
 
-use function ZappoQ\buildTree;
-use function ZappoQ\Formatters\stylish;
+require_once __DIR__ . '/Builder.php';
+require_once __DIR__ . '/Formatters.php';
 
 function genDiff(array $data1, array $data2, string $format = 'stylish'): string
 {
+    // Строим AST
     $ast = buildTree($data1, $data2);
 
-    if ($format === 'stylish') {
-        return "{\n" . stylish($ast) . "\n}";
-    }
-    
-    throw new \Exception("Unsupported format: {$format}");
+    // Получаем нужный форматер через фабрику
+    $formatter = getFormatter($format);
+
+    // Возвращаем отформатированный результат
+    return $formatter($ast);
 }

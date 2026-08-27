@@ -4,12 +4,13 @@
 ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
-// Подключаем файлы с функциями
 require_once __DIR__ . '/../src/Parsing.php';
 require_once __DIR__ . '/../src/Builder.php';
-require_once __DIR__ . '/../src/Formatters/Stylish.php';
+require_once __DIR__ . '/../src/Formatters.php';
 require_once __DIR__ . '/../src/Differ.php';
+
+use ZappoQ\parseFile;
+use ZappoQ\genDiff;
 
 $usage = <<<'USAGE'
 Generate diff
