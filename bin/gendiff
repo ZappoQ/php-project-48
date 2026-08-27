@@ -5,7 +5,6 @@ ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Подключаем ВСЕ файлы с функциями
 require_once __DIR__ . '/../src/Parsing.php';
 require_once __DIR__ . '/../src/Builder.php';
 require_once __DIR__ . '/../src/Formatters.php';
@@ -34,7 +33,6 @@ try {
         $secondFile = $args['<secondFile>'];
         $format = $args['--format'] ?? 'stylish';
 
-        // Используем ПОЛНЫЕ имена с обратным слешем
         $data1 = \ZappoQ\parseFile($firstFile);
         $data2 = \ZappoQ\parseFile($secondFile);
 
