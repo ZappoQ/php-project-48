@@ -45,5 +45,8 @@ function stringify($value): string
     if (is_array($value)) {
         return '{ ... }';
     }
+    if ($value === '') {
+        return '';
+    }
     return (string) $value;
 }

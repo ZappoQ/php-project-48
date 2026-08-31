@@ -22,5 +22,6 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
 
     $ast = buildTree($data1, $data2);
     $formatter = getFormatter($format);
-    return $formatter($ast);
+    $result = $formatter($ast);
+    return preg_replace('/: /', ': ', $result);
 }
