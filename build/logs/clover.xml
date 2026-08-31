@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1788208153">
-  <project timestamp="1788208153">
+<coverage generated="1788208671">
+  <project timestamp="1788208671">
     <file name="/Users/dom/php-project-48/src/Differ/Builder.php">
       <line num="7" type="stmt" count="9"/>
       <line num="8" type="stmt" count="9"/>
