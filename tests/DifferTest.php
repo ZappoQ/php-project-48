@@ -1,17 +1,17 @@
 <?php
 
-namespace ZappoQ\Tests;
+namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function ZappoQ\parseFile;
-use function ZappoQ\genDiff;
-use function ZappoQ\isJsonFile;
-use function ZappoQ\isYamlFile;
-use function ZappoQ\Formatters\stringify;
+use function Differ\parseFile;
+use function Differ\genDiff;
+use function Differ\isJsonFile;
+use function Differ\isYamlFile;
+use function Differ\Formatters\stringify;
 
 require_once __DIR__ . '/../src/Parsing.php';
 require_once __DIR__ . '/../src/Builder.php';
-require_once __DIR__ . '/../src/Formatters/Stylish.php';
+require_once __DIR__ . '/../src/Formatters.php';
 require_once __DIR__ . '/../src/Differ.php';
 
 class DifferTest extends TestCase
@@ -27,12 +27,12 @@ class DifferTest extends TestCase
         $data2 = parseFile($this->getFixturePath('flat2.json'));
 
         $expected = '{
-- follow: false
-  host: hexlet.io
-- proxy: 123.234.53.22
-- timeout: 50
-+ timeout: 20
-+ verbose: true
+    - follow: false
+      host: hexlet.io
+    - proxy: 123.234.53.22
+    - timeout: 50
+    + timeout: 20
+    + verbose: true
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -44,32 +44,32 @@ class DifferTest extends TestCase
         $data2 = parseFile($this->getFixturePath('nested2.json'));
 
         $expected = '{
-common: {
-    + follow: false
-      setting1: Value 1
-    - setting2: 200
-    - setting3: true
-    + setting3: null
-    + setting4: blah blah
-    + setting5: { ... }
+  common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: { ... }
     setting6: {
-        doge: {
-            - wow: 
-            + wow: so much
-        }
+      doge: {
+          - wow: 
+          + wow: so much
+      }
           key: value
         + ops: vops
     }
-}
-group1: {
-    - baz: bas
-    + baz: bars
-      foo: bar
-    - nest: { ... }
-    + nest: str
-}
-- group2: { ... }
-+ group3: { ... }
+  }
+  group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: { ... }
+      + nest: str
+  }
+    - group2: { ... }
+    + group3: { ... }
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -81,32 +81,32 @@ group1: {
         $data2 = parseFile($this->getFixturePath('nested2.yml'));
 
         $expected = '{
-common: {
-    + follow: false
-      setting1: Value 1
-    - setting2: 200
-    - setting3: true
-    + setting3: null
-    + setting4: blah blah
-    + setting5: { ... }
+  common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: { ... }
     setting6: {
-        doge: {
-            - wow: 
-            + wow: so much
-        }
+      doge: {
+          - wow: 
+          + wow: so much
+      }
           key: value
         + ops: vops
     }
-}
-group1: {
-    - baz: bas
-    + baz: bars
-      foo: bar
-    - nest: { ... }
-    + nest: str
-}
-- group2: { ... }
-+ group3: { ... }
+  }
+  group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: { ... }
+      + nest: str
+  }
+    - group2: { ... }
+    + group3: { ... }
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -118,32 +118,32 @@ group1: {
         $data2 = parseFile($this->getFixturePath('nested2.yml'));
 
         $expected = '{
-common: {
-    + follow: false
-      setting1: Value 1
-    - setting2: 200
-    - setting3: true
-    + setting3: null
-    + setting4: blah blah
-    + setting5: { ... }
+  common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: { ... }
     setting6: {
-        doge: {
-            - wow: 
-            + wow: so much
-        }
+      doge: {
+          - wow: 
+          + wow: so much
+      }
           key: value
         + ops: vops
     }
-}
-group1: {
-    - baz: bas
-    + baz: bars
-      foo: bar
-    - nest: { ... }
-    + nest: str
-}
-- group2: { ... }
-+ group3: { ... }
+  }
+  group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: { ... }
+      + nest: str
+  }
+    - group2: { ... }
+    + group3: { ... }
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -251,6 +251,7 @@ group1: {
 
         $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
     }
+
     public function testGenDiffJsonFlat(): void
     {
         $data1 = parseFile($this->getFixturePath('flat1.json'));

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZappoQ;
+namespace Differ;
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -11,7 +11,7 @@ function parseFile(string $filePath): array
     }
 
     $content = file_get_contents($filePath);
-    
+
     if (isJsonFile($filePath)) {
         $data = json_decode($content, true);
         if (json_last_error() !== JSON_ERROR_NONE) {

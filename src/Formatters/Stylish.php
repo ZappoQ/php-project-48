@@ -1,12 +1,12 @@
 <?php
 
-namespace ZappoQ\Formatters;
+namespace Differ\Formatters;
 
-function stylish(array $ast, int $depth = 0): string
+function stylish(array $ast, int $depth = 1): string
 {
     $lines = [];
-    $indent = str_repeat('    ', $depth);
-    $childIndent = str_repeat('    ', $depth + 1);
+    $indent = str_repeat('  ', $depth);
+    $nextIndent = str_repeat('  ', $depth + 1);
 
     foreach ($ast as $key => $node) {
         switch ($node['type']) {
@@ -16,17 +16,17 @@ function stylish(array $ast, int $depth = 0): string
                 $lines[] = $indent . '}';
                 break;
             case 'added':
-                $lines[] = $indent . '+ ' . $key . ': ' . stringify($node['value']);
+                $lines[] = $indent . '  + ' . $key . ': ' . stringify($node['value']);
                 break;
             case 'removed':
-                $lines[] = $indent . '- ' . $key . ': ' . stringify($node['value']);
+                $lines[] = $indent . '  - ' . $key . ': ' . stringify($node['value']);
                 break;
             case 'unchanged':
-                $lines[] = $indent . '  ' . $key . ': ' . stringify($node['value']);
+                $lines[] = $indent . '    ' . $key . ': ' . stringify($node['value']);
                 break;
             case 'changed':
-                $lines[] = $indent . '- ' . $key . ': ' . stringify($node['oldValue']);
-                $lines[] = $indent . '+ ' . $key . ': ' . stringify($node['newValue']);
+                $lines[] = $indent . '  - ' . $key . ': ' . stringify($node['oldValue']);
+                $lines[] = $indent . '  + ' . $key . ': ' . stringify($node['newValue']);
                 break;
         }
     }

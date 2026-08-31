@@ -1,6 +1,6 @@
 <?php
 
-namespace ZappoQ\Formatters;
+namespace Differ\Formatters;
 
 function plain(array $ast, string $path = ''): string
 {
@@ -29,7 +29,6 @@ function plain(array $ast, string $path = ''): string
                 break;
 
             case 'unchanged':
-                // Ничего не выводим для неизменённых ключей
                 break;
         }
     }

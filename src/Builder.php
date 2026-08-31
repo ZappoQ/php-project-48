@@ -1,6 +1,6 @@
 <?php
 
-namespace ZappoQ;
+namespace Differ;
 
 function buildTree(array $data1, array $data2): array
 {

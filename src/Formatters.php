@@ -1,14 +1,14 @@
 <?php
 
-namespace ZappoQ;
+namespace Differ;
 
 require_once __DIR__ . '/Formatters/Stylish.php';
 require_once __DIR__ . '/Formatters/Plain.php';
 require_once __DIR__ . '/Formatters/Json.php';
 
-use function ZappoQ\Formatters\stylish;
-use function ZappoQ\Formatters\plain;
-use function ZappoQ\Formatters\json as jsonFormatter;
+use function Differ\Formatters\stylish;
+use function Differ\Formatters\plain;
+use function Differ\Formatters\json as jsonFormatter;
 
 function getFormatter(string $format): callable
 {

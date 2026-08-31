@@ -11,7 +11,7 @@ require_once __DIR__ . '/../src/Formatters.php';
 require_once __DIR__ . '/../src/Differ.php';
 
 $usage = <<<'USAGE'
-Generate diff
+Compares two configuration files and shows a difference.
 
 Usage:
   gendiff (-h|--help)
@@ -22,7 +22,6 @@ Options:
   -h --help                     Show this screen
   -v --version                  Show version
   --format <fmt>                Report format [default: stylish]
-
 USAGE;
 
 try {
@@ -33,10 +32,10 @@ try {
         $secondFile = $args['<secondFile>'];
         $format = $args['--format'] ?? 'stylish';
 
-        $data1 = \ZappoQ\parseFile($firstFile);
-        $data2 = \ZappoQ\parseFile($secondFile);
+        $data1 = \Differ\parseFile($firstFile);
+        $data2 = \Differ\parseFile($secondFile);
 
-        echo \ZappoQ\genDiff($data1, $data2, $format);
+        echo \Differ\genDiff($data1, $data2, $format);
     }
 } catch (Exception $e) {
     echo $e->getMessage() . PHP_EOL;

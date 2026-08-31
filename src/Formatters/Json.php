@@ -1,6 +1,6 @@
 <?php
 
-namespace ZappoQ\Formatters;
+namespace Differ\Formatters;
 
 function json(array $ast): string
 {
