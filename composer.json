@@ -13,13 +13,22 @@
         "squizlabs/php_codesniffer": "^4.0"
     },
     "autoload": {
+        "files": [
+            "src/Differ/Parsing.php",
+            "src/Differ/Builder.php",
+            "src/Differ/Formatters/Stylish.php",
+            "src/Differ/Formatters/Plain.php",
+            "src/Differ/Formatters/Json.php",
+            "src/Differ/Formatters.php",
+            "src/Differ/Differ.php"
+        ],
         "psr-4": {
             "Differ\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ZappoQ\\Tests\\": "tests/"
+            "Differ\\Tests\\": "tests/"
         }
     },
     "scripts": {

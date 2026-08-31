@@ -3,16 +3,12 @@
 namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
+
 use function Differ\Differ\parseFile;
 use function Differ\Differ\genDiff;
 use function Differ\Differ\isJsonFile;
 use function Differ\Differ\isYamlFile;
 use function Differ\Differ\Formatters\stringify;
-
-require_once __DIR__ . '/../src/Differ/Parsing.php';
-require_once __DIR__ . '/../src/Differ/Builder.php';
-require_once __DIR__ . '/../src/Differ/Formatters.php';
-require_once __DIR__ . '/../src/Differ/Differ.php';
 
 class DifferTest extends TestCase
 {

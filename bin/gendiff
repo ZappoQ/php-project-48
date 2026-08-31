@@ -5,11 +5,6 @@ ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once __DIR__ . '/../src/Differ/Parsing.php';
-require_once __DIR__ . '/../src/Differ/Builder.php';
-require_once __DIR__ . '/../src/Differ/Formatters.php';
-require_once __DIR__ . '/../src/Differ/Differ.php';
-
 use function Differ\Differ\parseFile;
 use function Differ\Differ\genDiff;
 

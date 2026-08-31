@@ -2,10 +2,6 @@
 
 namespace Differ\Differ;
 
-require_once __DIR__ . '/Formatters/Stylish.php';
-require_once __DIR__ . '/Formatters/Plain.php';
-require_once __DIR__ . '/Formatters/Json.php';
-
 use function Differ\Differ\Formatters\stylish;
 use function Differ\Differ\Formatters\plain;
 use function Differ\Differ\Formatters\json as jsonFormatter;
