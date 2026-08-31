@@ -1,14 +1,14 @@
 <?php
 
-namespace Differ;
+namespace Differ\Differ;
 
 require_once __DIR__ . '/Formatters/Stylish.php';
 require_once __DIR__ . '/Formatters/Plain.php';
 require_once __DIR__ . '/Formatters/Json.php';
 
-use function Differ\Formatters\stylish;
-use function Differ\Formatters\plain;
-use function Differ\Formatters\json as jsonFormatter;
+use function Differ\Differ\Formatters\stylish;
+use function Differ\Differ\Formatters\plain;
+use function Differ\Differ\Formatters\json as jsonFormatter;
 
 function getFormatter(string $format): callable
 {

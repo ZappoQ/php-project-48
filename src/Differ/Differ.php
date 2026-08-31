@@ -1,9 +1,9 @@
 <?php
 
-namespace Differ;
+namespace Differ\Differ;
 
-use function Differ\buildTree;
-use function Differ\getFormatter;
+use function Differ\Differ\buildTree;
+use function Differ\Differ\getFormatter;
 
 function genDiff(array $data1, array $data2, string $format = 'stylish'): string
 {

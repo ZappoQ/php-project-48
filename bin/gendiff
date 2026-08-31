@@ -5,13 +5,16 @@ ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once __DIR__ . '/../src/Parsing.php';
-require_once __DIR__ . '/../src/Builder.php';
-require_once __DIR__ . '/../src/Formatters.php';
-require_once __DIR__ . '/../src/Differ.php';
+require_once __DIR__ . '/../src/Differ/Parsing.php';
+require_once __DIR__ . '/../src/Differ/Builder.php';
+require_once __DIR__ . '/../src/Differ/Formatters.php';
+require_once __DIR__ . '/../src/Differ/Differ.php';
+
+use function Differ\Differ\parseFile;
+use function Differ\Differ\genDiff;
 
 $usage = <<<'USAGE'
-Compares two configuration files and shows a difference.
+Generate diff
 
 Usage:
   gendiff (-h|--help)
@@ -22,6 +25,7 @@ Options:
   -h --help                     Show this screen
   -v --version                  Show version
   --format <fmt>                Report format [default: stylish]
+
 USAGE;
 
 try {
@@ -32,10 +36,10 @@ try {
         $secondFile = $args['<secondFile>'];
         $format = $args['--format'] ?? 'stylish';
 
-        $data1 = \Differ\parseFile($firstFile);
-        $data2 = \Differ\parseFile($secondFile);
+        $data1 = parseFile($firstFile);
+        $data2 = parseFile($secondFile);
 
-        echo \Differ\genDiff($data1, $data2, $format);
+        echo genDiff($data1, $data2, $format);
     }
 } catch (Exception $e) {
     echo $e->getMessage() . PHP_EOL;
