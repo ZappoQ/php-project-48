@@ -5,8 +5,8 @@
     <file>tests</file>
     <exclude-pattern>vendor/*</exclude-pattern>
 
-    <!-- Игнорируем require_once в тестах -->
+    <!-- Игнорируем require_once в Formatters.php -->
     <rule ref="PSR1.Files.SideEffects">
-        <exclude-pattern>tests/*</exclude-pattern>
+        <exclude-pattern>src/Differ/Formatters.php</exclude-pattern>
     </rule>
 </ruleset>

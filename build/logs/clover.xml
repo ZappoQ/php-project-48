@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1788209041">
-  <project timestamp="1788209041">
+<coverage generated="1788209634">
+  <project timestamp="1788209634">
     <file name="/Users/dom/php-project-48/src/Differ/Builder.php">
       <line num="7" type="stmt" count="9"/>
       <line num="8" type="stmt" count="9"/>
@@ -31,34 +31,26 @@
       <metrics loc="39" ncloc="39" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="26" elements="26" coveredelements="26"/>
     </file>
     <file name="/Users/dom/php-project-48/src/Differ/Differ.php">
-      <line num="7" type="stmt" count="9"/>
-      <line num="8" type="stmt" count="0"/>
       <line num="10" type="stmt" count="9"/>
-      <line num="11" type="stmt" count="0"/>
-      <line num="15" type="stmt" count="9"/>
-      <line num="16" type="stmt" count="0"/>
-      <line num="18" type="stmt" count="9"/>
-      <line num="19" type="stmt" count="0"/>
-      <line num="22" type="stmt" count="9"/>
-      <line num="23" type="stmt" count="9"/>
-      <line num="24" type="stmt" count="8"/>
-      <metrics loc="26" ncloc="25" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="7" elements="11" coveredelements="7"/>
+      <line num="11" type="stmt" count="9"/>
+      <line num="12" type="stmt" count="8"/>
+      <metrics loc="14" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="3" coveredelements="3"/>
     </file>
     <file name="/Users/dom/php-project-48/src/Differ/Formatters.php">
-      <line num="8" type="stmt" count="9"/>
-      <line num="9" type="stmt" count="4"/>
-      <line num="10" type="stmt" count="4"/>
-      <line num="11" type="stmt" count="4"/>
-      <line num="12" type="stmt" count="5"/>
-      <line num="13" type="stmt" count="2"/>
-      <line num="14" type="stmt" count="2"/>
-      <line num="15" type="stmt" count="2"/>
-      <line num="16" type="stmt" count="3"/>
+      <line num="12" type="stmt" count="9"/>
+      <line num="13" type="stmt" count="4"/>
+      <line num="14" type="stmt" count="4"/>
+      <line num="15" type="stmt" count="4"/>
+      <line num="16" type="stmt" count="5"/>
       <line num="17" type="stmt" count="2"/>
       <line num="18" type="stmt" count="2"/>
       <line num="19" type="stmt" count="2"/>
-      <line num="21" type="stmt" count="1"/>
-      <metrics loc="24" ncloc="24" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="13" coveredelements="13"/>
+      <line num="20" type="stmt" count="3"/>
+      <line num="21" type="stmt" count="2"/>
+      <line num="22" type="stmt" count="2"/>
+      <line num="23" type="stmt" count="2"/>
+      <line num="25" type="stmt" count="1"/>
+      <metrics loc="28" ncloc="28" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="13" coveredelements="13"/>
     </file>
     <file name="/Users/dom/php-project-48/src/Differ/Formatters/Json.php">
       <line num="7" type="stmt" count="2"/>
@@ -149,6 +141,6 @@
       <line num="37" type="stmt" count="4"/>
       <metrics loc="39" ncloc="39" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="15" coveredelements="15"/>
     </file>
-    <metrics files="7" loc="242" ncloc="241" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="127" coveredstatements="123" elements="127" coveredelements="123"/>
+    <metrics files="7" loc="234" ncloc="234" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="119" coveredstatements="119" elements="119" coveredelements="119"/>
   </project>
 </coverage>

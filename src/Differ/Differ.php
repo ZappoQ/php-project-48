@@ -11,14 +11,6 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
         $data2 = json_decode($data2, true);
     }
 
-    // Если всё ещё не массивы - преобразуем
-    if (!is_array($data1)) {
-        $data1 = [];
-    }
-    if (!is_array($data2)) {
-        $data2 = [];
-    }
-
     $ast = buildTree($data1, $data2);
     $formatter = getFormatter($format);
     return $formatter($ast);
