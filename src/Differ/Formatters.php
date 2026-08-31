@@ -2,10 +2,6 @@
 
 namespace Differ\Differ;
 
-use function Differ\Differ\Formatters\stylish;
-use function Differ\Differ\Formatters\plain;
-use function Differ\Differ\Formatters\json as jsonFormatter;
-
 function getFormatter(string $format): callable
 {
     switch ($format) {
