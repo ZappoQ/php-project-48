@@ -4,7 +4,6 @@ namespace Differ\Differ;
 
 function genDiff($data1, $data2, string $format = 'stylish'): string
 {
-    // Если переданы строки - парсим их
     if (is_string($data1)) {
         $data1 = json_decode($data1, true);
     }
@@ -12,7 +11,6 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
         $data2 = json_decode($data2, true);
     }
 
-    // Если всё ещё null - преобразуем в пустой массив
     if ($data1 === null) {
         $data1 = [];
     }
@@ -22,6 +20,5 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
 
     $ast = buildTree($data1, $data2);
     $formatter = getFormatter($format);
-    $result = $formatter($ast);
-    return preg_replace('/: /', ': ', $result);
+    return rtrim($formatter($ast));
 }
