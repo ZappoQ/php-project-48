@@ -22,6 +22,6 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
     $formatter = getFormatter($format);
     $result = $formatter($ast);
 
-    // Убираем все пробелы и переносы в конце
-    return rtrim($result);
+    // Убираем ТОЛЬКО последний перенос строки, если он есть
+    return preg_replace('/\n$/', '', $result);
 }
