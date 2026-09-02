@@ -20,5 +20,8 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
 
     $ast = buildTree($data1, $data2);
     $formatter = getFormatter($format);
-    return rtrim($formatter($ast));
+    $result = $formatter($ast);
+
+    // Убираем лишний перенос в конце
+    return rtrim($result, "\n");
 }
