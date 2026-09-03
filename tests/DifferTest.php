@@ -40,32 +40,49 @@ class DifferTest extends TestCase
         $data2 = parseFile($this->getFixturePath('nested2.json'));
 
         $expected = '{
-  common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: { ... }
+common: {
+        + follow: false
+          setting1: Value 1
+        - setting2: 200
+        - setting3: true
+        + setting3: null
+        + setting4: blah blah
+        + setting5: { ... }
     setting6: {
-      doge: {
-          - wow: 
-          + wow: so much
-      }
-          key: value
-        + ops: vops
+        doge: {
+                - wow: 
+                + wow: so much
+        }
+              key: value
+            + ops: vops
     }
-  }
-  group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: { ... }
-      + nest: str
-  }
+}
+group1: {
+        - baz: bas
+        + baz: bars
+          foo: bar
+        - nest: { ... }
+        + nest: str
+}
     - group2: { ... }
     + group3: { ... }
+group4: {
+        - default: null
+        + default: 
+        - foo: 0
+        + foo: null
+        - isNested: false
+        + isNested: none
+        + key: false
+    nest: {
+            - bar: 
+            + bar: 0
+              isNested: true
+    }
+        + someKey: true
+        - type: bas
+        + type: bar
+}
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -77,32 +94,49 @@ class DifferTest extends TestCase
         $data2 = parseFile($this->getFixturePath('nested2.yml'));
 
         $expected = '{
-  common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: { ... }
+common: {
+        + follow: false
+          setting1: Value 1
+        - setting2: 200
+        - setting3: true
+        + setting3: null
+        + setting4: blah blah
+        + setting5: { ... }
     setting6: {
-      doge: {
-          - wow: 
-          + wow: so much
-      }
-          key: value
-        + ops: vops
+        doge: {
+                - wow: 
+                + wow: so much
+        }
+              key: value
+            + ops: vops
     }
-  }
-  group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: { ... }
-      + nest: str
-  }
+}
+group1: {
+        - baz: bas
+        + baz: bars
+          foo: bar
+        - nest: { ... }
+        + nest: str
+}
     - group2: { ... }
     + group3: { ... }
+group4: {
+        - default: null
+        + default: 
+        - foo: 0
+        + foo: null
+        - isNested: false
+        + isNested: none
+        + key: false
+    nest: {
+            - bar: 
+            + bar: 0
+              isNested: true
+    }
+        + someKey: true
+        - type: bas
+        + type: bar
+}
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -114,32 +148,49 @@ class DifferTest extends TestCase
         $data2 = parseFile($this->getFixturePath('nested2.yml'));
 
         $expected = '{
-  common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: { ... }
+common: {
+        + follow: false
+          setting1: Value 1
+        - setting2: 200
+        - setting3: true
+        + setting3: null
+        + setting4: blah blah
+        + setting5: { ... }
     setting6: {
-      doge: {
-          - wow: 
-          + wow: so much
-      }
-          key: value
-        + ops: vops
+        doge: {
+                - wow: 
+                + wow: so much
+        }
+              key: value
+            + ops: vops
     }
-  }
-  group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: { ... }
-      + nest: str
-  }
+}
+group1: {
+        - baz: bas
+        + baz: bars
+          foo: bar
+        - nest: { ... }
+        + nest: str
+}
     - group2: { ... }
     + group3: { ... }
+group4: {
+        - default: null
+        + default: 
+        - foo: 0
+        + foo: null
+        - isNested: false
+        + isNested: none
+        + key: false
+    nest: {
+            - bar: 
+            + bar: 0
+              isNested: true
+    }
+        + someKey: true
+        - type: bas
+        + type: bar
+}
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -243,7 +294,14 @@ class DifferTest extends TestCase
             . "Property 'group1.baz' was updated. From 'bas' to 'bars'\n"
             . "Property 'group1.nest' was updated. From [complex value] to 'str'\n"
             . "Property 'group2' was removed\n"
-            . "Property 'group3' was added with value: [complex value]";
+            . "Property 'group3' was added with value: [complex value]\n"
+            . "Property 'group4.default' was updated. From null to ''\n"
+            . "Property 'group4.foo' was updated. From 0 to null\n"
+            . "Property 'group4.isNested' was updated. From false to 'none'\n"
+            . "Property 'group4.key' was added with value: false\n"
+            . "Property 'group4.nest.bar' was updated. From '' to 0\n"
+            . "Property 'group4.someKey' was added with value: true\n"
+            . "Property 'group4.type' was updated. From 'bas' to 'bar'";
 
         $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
     }
@@ -304,6 +362,24 @@ class DifferTest extends TestCase
             ],
             'group2' => ['type' => 'removed', 'value' => ['abc' => 12345, 'deep' => ['id' => 45]]],
             'group3' => ['type' => 'added', 'value' => ['deep' => ['id' => ['number' => 45]], 'fee' => 100500]],
+            'group4' => [
+                'type' => 'nested',
+                'children' => [
+                    'default' => ['type' => 'changed', 'oldValue' => null, 'newValue' => ''],
+                    'foo' => ['type' => 'changed', 'oldValue' => 0, 'newValue' => null],
+                    'isNested' => ['type' => 'changed', 'oldValue' => false, 'newValue' => 'none'],
+                    'key' => ['type' => 'added', 'value' => false],
+                    'nest' => [
+                        'type' => 'nested',
+                        'children' => [
+                            'bar' => ['type' => 'changed', 'oldValue' => '', 'newValue' => 0],
+                            'isNested' => ['type' => 'unchanged', 'value' => true],
+                        ],
+                    ],
+                    'someKey' => ['type' => 'added', 'value' => true],
+                    'type' => ['type' => 'changed', 'oldValue' => 'bas', 'newValue' => 'bar'],
+                ],
+            ],
         ], JSON_PRETTY_PRINT);
 
         $this->assertEquals($expected, genDiff($data1, $data2, 'json'));
