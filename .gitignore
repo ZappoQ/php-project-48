@@ -1,1 +1,19 @@
+# IDE
+.idea/
+
+# Build logs
+build/logs/
+
+# OS files
+.DS_Store
+
+# Composer
 /vendor/
+composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+
+# Coverage
+*.cov
+*.clover
