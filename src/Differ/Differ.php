@@ -22,5 +22,8 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
     $formatter = getFormatter($format);
     $result = $formatter($ast);
 
-    return "{\n" . $result . "\n}";
+    if ($format === 'stylish') {
+        return "{\n" . $result . "\n}";
+    }
+    return $result;
 }
