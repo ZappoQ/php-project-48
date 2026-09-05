@@ -7,8 +7,7 @@ function getFormatter(string $format): callable
     switch ($format) {
         case 'stylish':
             return function ($ast) {
-                $result = Formatters\stylish($ast);
-                return "{\n" . $result . "\n}";
+                return Formatters\stylish($ast);
             };
         case 'plain':
             return function ($ast) {
