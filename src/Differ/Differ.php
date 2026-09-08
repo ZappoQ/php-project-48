@@ -4,21 +4,25 @@ namespace Differ\Differ;
 
 use function Differ\Differ\buildTree;
 use function Differ\Differ\getFormatter;
+use function Differ\Differ\parseFile;
 
 function genDiff($data1, $data2, string $format = 'stylish'): string
 {
-    // Если переданы строки — парсим их как JSON
-    if (is_string($data1)) {
+    if (is_string($data1) && file_exists($data1)) {
+        $data1 = parseFile($data1);
+    } elseif (is_string($data1)) {
         $data1 = json_decode($data1, true);
     }
-    if (is_string($data2)) {
+
+    if (is_string($data2) && file_exists($data2)) {
+        $data2 = parseFile($data2);
+    } elseif (is_string($data2)) {
         $data2 = json_decode($data2, true);
     }
-
-    if ($data1 === null) {
+    if (!is_array($data1)) {
         $data1 = [];
     }
-    if ($data2 === null) {
+    if (!is_array($data2)) {
         $data2 = [];
     }
 
