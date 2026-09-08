@@ -19,7 +19,6 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
     } elseif (is_string($data2)) {
         $data2 = json_decode($data2, true);
     }
-
     if (!is_array($data1)) {
         $data1 = [];
     }
@@ -30,11 +29,9 @@ function genDiff($data1, $data2, string $format = 'stylish'): string
     $ast = buildTree($data1, $data2);
     $formatter = getFormatter($format);
 
-    $result = $formatter($ast);
-
     if ($format === 'stylish') {
-        $result = "{\n" . $result . "\n}";
+        return "{\n" . $formatter($ast) . "\n}";
     }
 
-    return rtrim($result) . "\n";
+    return $formatter($ast);
 }
