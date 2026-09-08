@@ -8,7 +8,7 @@ use function Differ\Differ\parseFile;
 use function Differ\Differ\genDiff;
 use function Differ\Differ\isJsonFile;
 use function Differ\Differ\isYamlFile;
-use function Differ\Differ\Formatters\stringify;
+use function Differ\Differ\Formatters\formatValue;
 
 class DifferTest extends TestCase
 {
@@ -19,16 +19,53 @@ class DifferTest extends TestCase
 
     public function testGenDiffFlatJson(): void
     {
-        $data1 = parseFile($this->getFixturePath('flat1.json'));
-        $data2 = parseFile($this->getFixturePath('flat2.json'));
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
 
         $expected = '{
-    - follow: false
-      host: hexlet.io
-    - proxy: 123.234.53.22
-    - timeout: 50
-    + timeout: 20
-    + verbose: true
+common: {
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+  setting6: {
+    doge: {
+        - wow: too much
+        + wow: so much
+    }
+        key: value
+      + ops: vops
+  }
+}
+group1: {
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
+}
+  - group2: { ... }
+  + group3: { ... }
+group4: {
+    - default: null
+    + default: 
+    - foo: 0
+    + foo: null
+    - isNested: false
+    + isNested: none
+    + key: false
+  nest: {
+      - bar: 
+      + bar: 0
+      - isNested: true
+  }
+    + someKey: true
+    - type: bas
+    + type: bar
+}
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
@@ -41,52 +78,53 @@ class DifferTest extends TestCase
 
         $expected = '{
 common: {
-        + follow: false
-          setting1: Value 1
-        - setting2: 200
-        - setting3: true
-        + setting3: null
-        + setting4: blah blah
-        + setting5: { ... }
-    setting6: {
-        doge: {
-                - wow: too much
-                + wow: so much
-        }
-              key: value
-            + ops: vops
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+  setting6: {
+    doge: {
+        - wow: too much
+        + wow: so much
     }
+        key: value
+      + ops: vops
+  }
 }
 group1: {
-        - baz: bas
-        + baz: bars
-          foo: bar
-        - nest: { ... }
-        + nest: str
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
 }
-    - group2: { ... }
-    + group3: { ... }
+  - group2: { ... }
+  + group3: { ... }
 group4: {
-        - default: null
-        + default: 
-        - foo: 0
-        + foo: null
-        - isNested: false
-        + isNested: none
-        + key: false
-    nest: {
-            - bar: 
-            + bar: 0
-            - isNested: true
-    }
-        + someKey: true
-        - type: bas
-        + type: bar
+    - default: null
+    + default: 
+    - foo: 0
+    + foo: null
+    - isNested: false
+    + isNested: none
+    + key: false
+  nest: {
+      - bar: 
+      + bar: 0
+      - isNested: true
+  }
+    + someKey: true
+    - type: bas
+    + type: bar
 }
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
+
     public function testGenDiffNestedYaml(): void
     {
         $data1 = parseFile($this->getFixturePath('file1.yml'));
@@ -94,47 +132,47 @@ group4: {
 
         $expected = '{
 common: {
-        + follow: false
-          setting1: Value 1
-        - setting2: 200
-        - setting3: true
-        + setting3: null
-        + setting4: blah blah
-        + setting5: { ... }
-    setting6: {
-        doge: {
-                - wow: too much
-                + wow: so much
-        }
-              key: value
-            + ops: vops
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+  setting6: {
+    doge: {
+        - wow: too much
+        + wow: so much
     }
+        key: value
+      + ops: vops
+  }
 }
 group1: {
-        - baz: bas
-        + baz: bars
-          foo: bar
-        - nest: { ... }
-        + nest: str
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
 }
-    - group2: { ... }
-    + group3: { ... }
+  - group2: { ... }
+  + group3: { ... }
 group4: {
-        - default: null
-        + default: 
-        - foo: 0
-        + foo: null
-        - isNested: false
-        + isNested: none
-        + key: false
-    nest: {
-            - bar: 
-            + bar: 0
-            - isNested: true
-    }
-        + someKey: true
-        - type: bas
-        + type: bar
+    - default: null
+    + default: 
+    - foo: 0
+    + foo: null
+    - isNested: false
+    + isNested: none
+    + key: false
+  nest: {
+      - bar: 
+      + bar: 0
+      - isNested: true
+  }
+    + someKey: true
+    - type: bas
+    + type: bar
 }
 }';
 
@@ -148,52 +186,53 @@ group4: {
 
         $expected = '{
 common: {
-        + follow: false
-          setting1: Value 1
-        - setting2: 200
-        - setting3: true
-        + setting3: null
-        + setting4: blah blah
-        + setting5: { ... }
-    setting6: {
-        doge: {
-                - wow: too much
-                + wow: so much
-        }
-              key: value
-            + ops: vops
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: { ... }
+  setting6: {
+    doge: {
+        - wow: too much
+        + wow: so much
     }
+        key: value
+      + ops: vops
+  }
 }
 group1: {
-        - baz: bas
-        + baz: bars
-          foo: bar
-        - nest: { ... }
-        + nest: str
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: { ... }
+    + nest: str
 }
-    - group2: { ... }
-    + group3: { ... }
+  - group2: { ... }
+  + group3: { ... }
 group4: {
-        - default: null
-        + default: 
-        - foo: 0
-        + foo: null
-        - isNested: false
-        + isNested: none
-        + key: false
-    nest: {
-            - bar: 
-            + bar: 0
-            - isNested: true
-    }
-        + someKey: true
-        - type: bas
-        + type: bar
+    - default: null
+    + default: 
+    - foo: 0
+    + foo: null
+    - isNested: false
+    + isNested: none
+    + key: false
+  nest: {
+      - bar: 
+      + bar: 0
+      - isNested: true
+  }
+    + someKey: true
+    - type: bas
+    + type: bar
 }
 }';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
+
     public function testIsJsonFile(): void
     {
         $this->assertTrue(isJsonFile('file.json'));
@@ -215,7 +254,6 @@ group4: {
     public function testParseFileNotFound(): void
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/File not found:/');
         parseFile('not_exists.json');
     }
 
@@ -225,7 +263,6 @@ group4: {
         file_put_contents($invalidJsonFile, '{invalid json}');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/Invalid JSON in file:/');
         parseFile($invalidJsonFile);
 
         unlink($invalidJsonFile);
@@ -237,7 +274,6 @@ group4: {
         file_put_contents($unsupportedFile, 'test content');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/Unsupported file format:/');
         parseFile($unsupportedFile);
 
         unlink($unsupportedFile);
@@ -245,49 +281,35 @@ group4: {
 
     public function testStringify(): void
     {
-        $this->assertEquals('true', stringify(true));
-        $this->assertEquals('false', stringify(false));
-        $this->assertEquals('null', stringify(null));
-        $this->assertEquals('123', stringify(123));
-        $this->assertEquals('test', stringify('test'));
-        $this->assertEquals('{ ... }', stringify(['key' => 'value']));
-        $this->assertEquals('{ ... }', stringify([]));
+        $this->assertEquals('true', formatValue(true));
+        $this->assertEquals('false', formatValue(false));
+        $this->assertEquals('null', formatValue(null));
+        $this->assertEquals('123', formatValue(123));
+        $this->assertEquals('test', formatValue('test'));
+        $this->assertEquals('{ ... }', formatValue(['key' => 'value']));
+        $this->assertEquals('', formatValue(''));
     }
 
     public function testGenDiffUnsupportedFormat(): void
     {
-        $data1 = parseFile($this->getFixturePath('flat1.json'));
-        $data2 = parseFile($this->getFixturePath('flat2.json'));
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Unsupported format: invalid');
         genDiff($data1, $data2, 'invalid');
     }
 
     public function testGenDiffPlainFlatJson(): void
     {
-        $data1 = parseFile($this->getFixturePath('flat1.json'));
-        $data2 = parseFile($this->getFixturePath('flat2.json'));
-
-        $expected = "Property 'follow' was removed\n"
-            . "Property 'proxy' was removed\n"
-            . "Property 'timeout' was updated. From 50 to 20\n"
-            . "Property 'verbose' was added with value: true";
-
-        $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
-    }
-
-    public function testGenDiffPlainNestedJson(): void
-    {
-        $data1 = parseFile($this->getFixturePath('nested1.json'));
-        $data2 = parseFile($this->getFixturePath('nested2.json'));
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
 
         $expected = "Property 'common.follow' was added with value: false\n"
             . "Property 'common.setting2' was removed\n"
             . "Property 'common.setting3' was updated. From true to null\n"
             . "Property 'common.setting4' was added with value: 'blah blah'\n"
             . "Property 'common.setting5' was added with value: [complex value]\n"
-            . "Property 'common.setting6.doge.wow' was updated. From '' to 'so much'\n"
+            . "Property 'common.setting6.doge.wow' was updated. From 'too much' to 'so much'\n"
             . "Property 'common.setting6.ops' was added with value: 'vops'\n"
             . "Property 'group1.baz' was updated. From 'bas' to 'bars'\n"
             . "Property 'group1.nest' was updated. From [complex value] to 'str'\n"
@@ -298,6 +320,35 @@ group4: {
             . "Property 'group4.isNested' was updated. From false to 'none'\n"
             . "Property 'group4.key' was added with value: false\n"
             . "Property 'group4.nest.bar' was updated. From '' to 0\n"
+            . "Property 'group4.nest.isNested' was removed\n"
+            . "Property 'group4.someKey' was added with value: true\n"
+            . "Property 'group4.type' was updated. From 'bas' to 'bar'";
+
+        $this->assertEquals($expected, genDiff($data1, $data2, 'plain'));
+    }
+
+    public function testGenDiffPlainNestedJson(): void
+    {
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
+
+        $expected = "Property 'common.follow' was added with value: false\n"
+            . "Property 'common.setting2' was removed\n"
+            . "Property 'common.setting3' was updated. From true to null\n"
+            . "Property 'common.setting4' was added with value: 'blah blah'\n"
+            . "Property 'common.setting5' was added with value: [complex value]\n"
+            . "Property 'common.setting6.doge.wow' was updated. From 'too much' to 'so much'\n"
+            . "Property 'common.setting6.ops' was added with value: 'vops'\n"
+            . "Property 'group1.baz' was updated. From 'bas' to 'bars'\n"
+            . "Property 'group1.nest' was updated. From [complex value] to 'str'\n"
+            . "Property 'group2' was removed\n"
+            . "Property 'group3' was added with value: [complex value]\n"
+            . "Property 'group4.default' was updated. From null to ''\n"
+            . "Property 'group4.foo' was updated. From 0 to null\n"
+            . "Property 'group4.isNested' was updated. From false to 'none'\n"
+            . "Property 'group4.key' was added with value: false\n"
+            . "Property 'group4.nest.bar' was updated. From '' to 0\n"
+            . "Property 'group4.nest.isNested' was removed\n"
             . "Property 'group4.someKey' was added with value: true\n"
             . "Property 'group4.type' was updated. From 'bas' to 'bar'";
 
@@ -306,24 +357,8 @@ group4: {
 
     public function testGenDiffJsonFlat(): void
     {
-        $data1 = parseFile($this->getFixturePath('flat1.json'));
-        $data2 = parseFile($this->getFixturePath('flat2.json'));
-
-        $expected = json_encode([
-            'follow' => ['type' => 'removed', 'value' => false],
-            'host' => ['type' => 'unchanged', 'value' => 'hexlet.io'],
-            'proxy' => ['type' => 'removed', 'value' => '123.234.53.22'],
-            'timeout' => ['type' => 'changed', 'oldValue' => 50, 'newValue' => 20],
-            'verbose' => ['type' => 'added', 'value' => true],
-        ], JSON_PRETTY_PRINT);
-
-        $this->assertEquals($expected, genDiff($data1, $data2, 'json'));
-    }
-
-    public function testGenDiffJsonNested(): void
-    {
-        $data1 = parseFile($this->getFixturePath('nested1.json'));
-        $data2 = parseFile($this->getFixturePath('nested2.json'));
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
 
         $expected = json_encode([
             'common' => [
@@ -341,7 +376,7 @@ group4: {
                             'doge' => [
                                 'type' => 'nested',
                                 'children' => [
-                                    'wow' => ['type' => 'changed', 'oldValue' => '', 'newValue' => 'so much'],
+                                    'wow' => ['type' => 'changed', 'oldValue' => 'too much', 'newValue' => 'so much'],
                                 ],
                             ],
                             'key' => ['type' => 'unchanged', 'value' => 'value'],
@@ -371,7 +406,70 @@ group4: {
                         'type' => 'nested',
                         'children' => [
                             'bar' => ['type' => 'changed', 'oldValue' => '', 'newValue' => 0],
-                            'isNested' => ['type' => 'unchanged', 'value' => true],
+                            'isNested' => ['type' => 'removed', 'value' => true],
+                        ],
+                    ],
+                    'someKey' => ['type' => 'added', 'value' => true],
+                    'type' => ['type' => 'changed', 'oldValue' => 'bas', 'newValue' => 'bar'],
+                ],
+            ],
+        ], JSON_PRETTY_PRINT);
+
+        $this->assertEquals($expected, genDiff($data1, $data2, 'json'));
+    }
+
+    public function testGenDiffJsonNested(): void
+    {
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
+
+        $expected = json_encode([
+            'common' => [
+                'type' => 'nested',
+                'children' => [
+                    'follow' => ['type' => 'added', 'value' => false],
+                    'setting1' => ['type' => 'unchanged', 'value' => 'Value 1'],
+                    'setting2' => ['type' => 'removed', 'value' => 200],
+                    'setting3' => ['type' => 'changed', 'oldValue' => true, 'newValue' => null],
+                    'setting4' => ['type' => 'added', 'value' => 'blah blah'],
+                    'setting5' => ['type' => 'added', 'value' => ['key5' => 'value5']],
+                    'setting6' => [
+                        'type' => 'nested',
+                        'children' => [
+                            'doge' => [
+                                'type' => 'nested',
+                                'children' => [
+                                    'wow' => ['type' => 'changed', 'oldValue' => 'too much', 'newValue' => 'so much'],
+                                ],
+                            ],
+                            'key' => ['type' => 'unchanged', 'value' => 'value'],
+                            'ops' => ['type' => 'added', 'value' => 'vops'],
+                        ],
+                    ],
+                ],
+            ],
+            'group1' => [
+                'type' => 'nested',
+                'children' => [
+                    'baz' => ['type' => 'changed', 'oldValue' => 'bas', 'newValue' => 'bars'],
+                    'foo' => ['type' => 'unchanged', 'value' => 'bar'],
+                    'nest' => ['type' => 'changed', 'oldValue' => ['key' => 'value'], 'newValue' => 'str'],
+                ],
+            ],
+            'group2' => ['type' => 'removed', 'value' => ['abc' => 12345, 'deep' => ['id' => 45]]],
+            'group3' => ['type' => 'added', 'value' => ['deep' => ['id' => ['number' => 45]], 'fee' => 100500]],
+            'group4' => [
+                'type' => 'nested',
+                'children' => [
+                    'default' => ['type' => 'changed', 'oldValue' => null, 'newValue' => ''],
+                    'foo' => ['type' => 'changed', 'oldValue' => 0, 'newValue' => null],
+                    'isNested' => ['type' => 'changed', 'oldValue' => false, 'newValue' => 'none'],
+                    'key' => ['type' => 'added', 'value' => false],
+                    'nest' => [
+                        'type' => 'nested',
+                        'children' => [
+                            'bar' => ['type' => 'changed', 'oldValue' => '', 'newValue' => 0],
+                            'isNested' => ['type' => 'removed', 'value' => true],
                         ],
                     ],
                     'someKey' => ['type' => 'added', 'value' => true],

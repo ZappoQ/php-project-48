@@ -5,8 +5,8 @@ namespace Differ\Differ\Formatters;
 function stylish(array $ast, int $depth = 0): string
 {
     $lines = [];
-    $indent = str_repeat('    ', $depth);
-    $nextIndent = str_repeat('    ', $depth + 1);
+    $indent = str_repeat('  ', $depth);
+    $nextIndent = str_repeat('  ', $depth + 1);
 
     foreach ($ast as $key => $node) {
         switch ($node['type']) {
@@ -16,17 +16,17 @@ function stylish(array $ast, int $depth = 0): string
                 $lines[] = $indent . '}';
                 break;
             case 'added':
-                $lines[] = $nextIndent . '+ ' . $key . ': ' . stringify($node['value']);
+                $lines[] = $nextIndent . '+ ' . $key . ': ' . formatValue($node['value']);
                 break;
             case 'removed':
-                $lines[] = $nextIndent . '- ' . $key . ': ' . stringify($node['value']);
+                $lines[] = $nextIndent . '- ' . $key . ': ' . formatValue($node['value']);
                 break;
             case 'unchanged':
-                $lines[] = $nextIndent . '  ' . $key . ': ' . stringify($node['value']);
+                $lines[] = $nextIndent . '  ' . $key . ': ' . formatValue($node['value']);
                 break;
             case 'changed':
-                $lines[] = $nextIndent . '- ' . $key . ': ' . stringify($node['oldValue']);
-                $lines[] = $nextIndent . '+ ' . $key . ': ' . stringify($node['newValue']);
+                $lines[] = $nextIndent . '- ' . $key . ': ' . formatValue($node['oldValue']);
+                $lines[] = $nextIndent . '+ ' . $key . ': ' . formatValue($node['newValue']);
                 break;
         }
     }
@@ -34,7 +34,7 @@ function stylish(array $ast, int $depth = 0): string
     return implode("\n", $lines);
 }
 
-function stringify($value): string
+function formatValue($value): string
 {
     if (is_bool($value)) {
         return $value ? 'true' : 'false';

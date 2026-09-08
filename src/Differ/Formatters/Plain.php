@@ -13,21 +13,17 @@ function plain(array $ast, string $path = ''): string
             case 'nested':
                 $lines[] = plain($node['children'], $currentPath);
                 break;
-
             case 'added':
-                $lines[] = "Property '{$currentPath}' was added with value: " . formatValue($node['value']);
+                $lines[] = "Property '{$currentPath}' was added with value: " . formatPlainValue($node['value']);
                 break;
-
             case 'removed':
                 $lines[] = "Property '{$currentPath}' was removed";
                 break;
-
             case 'changed':
                 $lines[] = "Property '{$currentPath}' was updated. From "
-                    . formatValue($node['oldValue']) . " to "
-                    . formatValue($node['newValue']);
+                    . formatPlainValue($node['oldValue']) . " to "
+                    . formatPlainValue($node['newValue']);
                 break;
-
             case 'unchanged':
                 break;
         }
@@ -36,7 +32,7 @@ function plain(array $ast, string $path = ''): string
     return implode("\n", array_filter($lines));
 }
 
-function formatValue($value): string
+function formatPlainValue($value): string
 {
     if (is_array($value)) {
         return '[complex value]';
