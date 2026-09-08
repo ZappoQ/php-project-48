@@ -16,17 +16,17 @@ function stylish(array $ast, int $depth = 0): string
                 $lines[] = $indent . '}';
                 break;
             case 'added':
-                $lines[] = $nextIndent . '+ ' . $key . ': ' . formatValue($node['value']);
+                $lines[] = $nextIndent . '+ ' . $key . ': ' . formatValue($node['value'], $depth + 1);
                 break;
             case 'removed':
-                $lines[] = $nextIndent . '- ' . $key . ': ' . formatValue($node['value']);
+                $lines[] = $nextIndent . '- ' . $key . ': ' . formatValue($node['value'], $depth + 1);
                 break;
             case 'unchanged':
-                $lines[] = $nextIndent . '  ' . $key . ': ' . formatValue($node['value']);
+                $lines[] = $nextIndent . '  ' . $key . ': ' . formatValue($node['value'], $depth + 1);
                 break;
             case 'changed':
-                $lines[] = $nextIndent . '- ' . $key . ': ' . formatValue($node['oldValue']);
-                $lines[] = $nextIndent . '+ ' . $key . ': ' . formatValue($node['newValue']);
+                $lines[] = $nextIndent . '- ' . $key . ': ' . formatValue($node['oldValue'], $depth + 1);
+                $lines[] = $nextIndent . '+ ' . $key . ': ' . formatValue($node['newValue'], $depth + 1);
                 break;
         }
     }
@@ -34,7 +34,7 @@ function stylish(array $ast, int $depth = 0): string
     return implode("\n", $lines);
 }
 
-function formatValue($value): string
+function formatValue($value, int $depth = 0): string
 {
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
