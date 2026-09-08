@@ -36,8 +36,8 @@ class DifferTest extends TestCase
 
     public function testGenDiffNestedJson(): void
     {
-        $data1 = parseFile($this->getFixturePath('nested1.json'));
-        $data2 = parseFile($this->getFixturePath('nested2.json'));
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.json'));
 
         $expected = '{
 common: {
@@ -50,7 +50,7 @@ common: {
         + setting5: { ... }
     setting6: {
         doge: {
-                - wow: 
+                - wow: too much
                 + wow: so much
         }
               key: value
@@ -77,7 +77,7 @@ group4: {
     nest: {
             - bar: 
             + bar: 0
-              isNested: true
+            - isNested: true
     }
         + someKey: true
         - type: bas
@@ -87,11 +87,10 @@ group4: {
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
-
     public function testGenDiffNestedYaml(): void
     {
-        $data1 = parseFile($this->getFixturePath('nested1.yml'));
-        $data2 = parseFile($this->getFixturePath('nested2.yml'));
+        $data1 = parseFile($this->getFixturePath('file1.yml'));
+        $data2 = parseFile($this->getFixturePath('file2.yml'));
 
         $expected = '{
 common: {
@@ -104,7 +103,7 @@ common: {
         + setting5: { ... }
     setting6: {
         doge: {
-                - wow: 
+                - wow: too much
                 + wow: so much
         }
               key: value
@@ -131,7 +130,7 @@ group4: {
     nest: {
             - bar: 
             + bar: 0
-              isNested: true
+            - isNested: true
     }
         + someKey: true
         - type: bas
@@ -144,8 +143,8 @@ group4: {
 
     public function testMixedFormats(): void
     {
-        $data1 = parseFile($this->getFixturePath('nested1.json'));
-        $data2 = parseFile($this->getFixturePath('nested2.yml'));
+        $data1 = parseFile($this->getFixturePath('file1.json'));
+        $data2 = parseFile($this->getFixturePath('file2.yml'));
 
         $expected = '{
 common: {
@@ -158,7 +157,7 @@ common: {
         + setting5: { ... }
     setting6: {
         doge: {
-                - wow: 
+                - wow: too much
                 + wow: so much
         }
               key: value
@@ -185,7 +184,7 @@ group4: {
     nest: {
             - bar: 
             + bar: 0
-              isNested: true
+            - isNested: true
     }
         + someKey: true
         - type: bas
@@ -195,7 +194,6 @@ group4: {
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
-
     public function testIsJsonFile(): void
     {
         $this->assertTrue(isJsonFile('file.json'));

@@ -34,8 +34,7 @@
     "isNested": "none",
     "key": false,
     "nest": {
-      "bar": 0,
-      "isNested": true
+      "bar": 0
     },
     "someKey": true,
     "type": "bar"
