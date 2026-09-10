@@ -42,6 +42,19 @@ function formatValue($value, int $depth = 0): string
     if (is_null($value)) {
         return 'null';
     }
+    if (is_array($value) && !empty($value) && array_keys($value) !== range(0, count($value) - 1)) {
+        // Ассоциативный массив — показываем полную структуру
+        $indent = str_repeat('  ', $depth + 1);
+        $lines = [];
+        foreach ($value as $k => $v) {
+            if (is_array($v)) {
+                $lines[] = $indent . $k . ': ' . formatValue($v, $depth + 1);
+            } else {
+                $lines[] = $indent . $k . ': ' . formatValue($v, $depth + 1);
+            }
+        }
+        return "{\n" . implode("\n", $lines) . "\n" . str_repeat('  ', $depth) . '}';
+    }
     if (is_array($value)) {
         return '{ ... }';
     }
