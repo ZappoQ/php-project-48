@@ -82,7 +82,8 @@ group4: {
     - type: bas
     + type: bar
 }
-}';
+}
+';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
@@ -152,7 +153,8 @@ group4: {
     - type: bas
     + type: bar
 }
-}';
+}
+';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
@@ -222,7 +224,8 @@ group4: {
     - type: bas
     + type: bar
 }
-}';
+}
+';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
@@ -292,7 +295,8 @@ group4: {
     - type: bas
     + type: bar
 }
-}';
+}
+';
 
         $this->assertEquals($expected, genDiff($data1, $data2));
     }
