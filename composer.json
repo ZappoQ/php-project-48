@@ -15,6 +15,7 @@
     "autoload": {
         "files": [
             "src/Differ.php",
+            "src/DifferDiffer.php",
             "src/Parsing.php",
             "src/Builder.php",
             "src/Formatters.php",
