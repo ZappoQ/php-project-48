@@ -27,7 +27,7 @@ function renderTree(array $tree, int $depth): array
         }
 
         if ($node['type'] === 'added') {
-            return ["{$signIndent}+ {$key}: " . formatValue($node['value'], $depth + 1)];
+            return [sprintf('%s+ %s: %s', $signIndent, $key, formatValue($node['value'], $depth + 1))];
         }
 
         if ($node['type'] === 'removed') {

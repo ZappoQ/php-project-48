@@ -13,7 +13,7 @@ class DifferTest extends TestCase
         return __DIR__ . '/fixtures/' . $filename;
     }
 
-    public function testJsonFlat(): void
+    public function testDefaultFormatJson(): void
     {
         $expected = rtrim(file_get_contents($this->getFixturePath('diff.stylish')));
         $actual = rtrim(genDiff(
@@ -23,7 +23,7 @@ class DifferTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testYamlFlat(): void
+    public function testDefaultFormatYaml(): void
     {
         $expected = rtrim(file_get_contents($this->getFixturePath('diff.stylish')));
         $actual = rtrim(genDiff(
@@ -33,7 +33,18 @@ class DifferTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testPlain(): void
+    public function testStylishFormat(): void
+    {
+        $expected = rtrim(file_get_contents($this->getFixturePath('diff.stylish')));
+        $actual = rtrim(genDiff(
+            $this->getFixturePath('file1.json'),
+            $this->getFixturePath('file2.json'),
+            'stylish'
+        ));
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testPlainFormat(): void
     {
         $expected = rtrim(file_get_contents($this->getFixturePath('diff.plain')));
         $actual = rtrim(genDiff(
@@ -53,5 +64,28 @@ class DifferTest extends TestCase
             'json'
         ), true);
         $this->assertEquals($expected, $actual);
+    }
+
+    public function testUnsupportedFormat(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unsupported format: invalid');
+
+        genDiff(
+            $this->getFixturePath('file1.json'),
+            $this->getFixturePath('file2.json'),
+            'invalid'
+        );
+    }
+
+    public function testFileNotFound(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('File not found');
+
+        genDiff(
+            $this->getFixturePath('not_exists.json'),
+            $this->getFixturePath('file2.json')
+        );
     }
 }

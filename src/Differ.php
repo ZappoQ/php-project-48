@@ -13,6 +13,5 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
     $tree = buildTree($data1, $data2);
     $formatter = getFormatter($format);
 
-    $result = $formatter($tree);
-    return $result . "\n";
+    return sprintf('%s%s', $formatter($tree), PHP_EOL);
 }

@@ -8,15 +8,10 @@ use function Differ\Formatters\Json\json;
 
 function getFormatter(string $format): callable
 {
-    $formatters = [
-        'stylish' => fn ($tree) => stylish($tree),
-        'plain' => fn ($tree) => plain($tree),
-        'json' => fn ($tree) => json($tree),
-    ];
-
-    if (!isset($formatters[$format])) {
-        throw new \Exception("Unsupported format: {$format}");
-    }
-
-    return $formatters[$format];
+    return match ($format) {
+        'stylish' => stylish(...),
+        'plain' => plain(...),
+        'json' => json(...),
+        default => throw new \Exception("Unsupported format: {$format}"),
+    };
 }
