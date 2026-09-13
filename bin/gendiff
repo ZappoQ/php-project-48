@@ -5,8 +5,7 @@ ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use function Differ\Differ\parseFile;
-use function Differ\Differ\genDiff;
+use function Differ\genDiff;
 
 $usage = <<<'USAGE'
 Generate diff
@@ -31,10 +30,7 @@ try {
         $secondFile = $args['<secondFile>'];
         $format = $args['--format'] ?? 'stylish';
 
-        $data1 = parseFile($firstFile);
-        $data2 = parseFile($secondFile);
-
-        echo genDiff($data1, $data2, $format);
+        echo genDiff($firstFile, $secondFile, $format);
     }
 } catch (Exception $e) {
     echo $e->getMessage() . PHP_EOL;
