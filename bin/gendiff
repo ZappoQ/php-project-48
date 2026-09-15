@@ -3,9 +3,16 @@
 
 ini_set('error_reporting', E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoloadPath = __DIR__ . '/../vendor/autoload.php';
 
-use function Differ\genDiff;
+if (!file_exists($autoloadPath)) {
+    fwrite(STDERR, "Autoloader not found. Run 'composer install'." . PHP_EOL);
+    exit(1);
+}
+
+require_once $autoloadPath;
+
+use function Differ\Differ\genDiff;
 
 $usage = <<<'USAGE'
 Generate diff

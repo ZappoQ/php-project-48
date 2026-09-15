@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "docopt/docopt": "^1.0",
         "symfony/yaml": "^5.4|^6.0"
     },
@@ -15,16 +15,17 @@
     "autoload": {
         "files": [
             "src/Differ.php",
-            "src/DifferDiffer.php",
             "src/Parsing.php",
             "src/Builder.php",
             "src/Formatters.php",
             "src/Formatters/Stylish.php",
             "src/Formatters/Plain.php",
             "src/Formatters/Json.php"
-        ],
+        ]
+    },
+    "autoload-dev": {
         "psr-4": {
-            "Differ\\": "src/"
+            "Differ\\Tests\\": "tests/"
         }
     },
     "scripts": {

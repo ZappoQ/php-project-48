@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\Formatters\Stylish;
+namespace Differ\Differ\Formatters\Stylish;
 
 function stylish(array $tree): string
 {

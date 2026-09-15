@@ -4,7 +4,7 @@ namespace Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use function Differ\genDiff;
+use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
@@ -13,57 +13,52 @@ class DifferTest extends TestCase
         return __DIR__ . '/fixtures/' . $filename;
     }
 
-    public function testDefaultFormatJson(): void
+    public static function formatProvider(): array
     {
-        $expected = rtrim(file_get_contents($this->getFixturePath('diff.stylish')));
-        $actual = rtrim(genDiff(
-            $this->getFixturePath('file1.json'),
-            $this->getFixturePath('file2.json')
-        ));
-        $this->assertEquals($expected, $actual);
+        return [
+            'json stylish' => ['file1.json', 'file2.json', 'stylish', 'diff.stylish'],
+            'json plain' => ['file1.json', 'file2.json', 'plain', 'diff.plain'],
+            'json json' => ['file1.json', 'file2.json', 'json', 'diff.json'],
+            'yaml stylish' => ['file1.yml', 'file2.yml', 'stylish', 'diff.stylish'],
+            'yaml plain' => ['file1.yml', 'file2.yml', 'plain', 'diff.plain'],
+            'yaml json' => ['file1.yml', 'file2.yml', 'json', 'diff.json'],
+            'json default' => ['file1.json', 'file2.json', null, 'diff.stylish'],
+            'yaml default' => ['file1.yml', 'file2.yml', null, 'diff.stylish'],
+        ];
     }
 
-    public function testDefaultFormatYaml(): void
-    {
-        $expected = rtrim(file_get_contents($this->getFixturePath('diff.stylish')));
-        $actual = rtrim(genDiff(
-            $this->getFixturePath('file1.yml'),
-            $this->getFixturePath('file2.yml')
-        ));
-        $this->assertEquals($expected, $actual);
-    }
+    /**
+     * @dataProvider formatProvider
+     */
+    public function testGenDiff(
+        string $file1,
+        string $file2,
+        ?string $format,
+        string $expectedFile
+    ): void {
+        $expectedPath = $this->getFixturePath($expectedFile);
 
-    public function testStylishFormat(): void
-    {
-        $expected = rtrim(file_get_contents($this->getFixturePath('diff.stylish')));
-        $actual = rtrim(genDiff(
-            $this->getFixturePath('file1.json'),
-            $this->getFixturePath('file2.json'),
-            'stylish'
-        ));
-        $this->assertEquals($expected, $actual);
-    }
+        if ($format === null) {
+            $actual = genDiff(
+                $this->getFixturePath($file1),
+                $this->getFixturePath($file2)
+            );
+        } else {
+            $actual = genDiff(
+                $this->getFixturePath($file1),
+                $this->getFixturePath($file2),
+                $format
+            );
+        }
 
-    public function testPlainFormat(): void
-    {
-        $expected = rtrim(file_get_contents($this->getFixturePath('diff.plain')));
-        $actual = rtrim(genDiff(
-            $this->getFixturePath('file1.json'),
-            $this->getFixturePath('file2.json'),
-            'plain'
-        ));
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function testJsonFormat(): void
-    {
-        $expected = json_decode(file_get_contents($this->getFixturePath('diff.json')), true);
-        $actual = json_decode(genDiff(
-            $this->getFixturePath('file1.json'),
-            $this->getFixturePath('file2.json'),
-            'json'
-        ), true);
-        $this->assertEquals($expected, $actual);
+        if ($expectedFile === 'diff.json') {
+            $this->assertEquals(
+                json_decode(file_get_contents($expectedPath), true),
+                json_decode($actual, true)
+            );
+        } else {
+            $this->assertStringEqualsFile($expectedPath, $actual);
+        }
     }
 
     public function testUnsupportedFormat(): void

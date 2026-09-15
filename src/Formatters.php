@@ -1,10 +1,10 @@
 <?php
 
-namespace Differ\Formatters;
+namespace Differ\Differ\Formatters;
 
-use function Differ\Formatters\Stylish\stylish;
-use function Differ\Formatters\Plain\plain;
-use function Differ\Formatters\Json\json;
+use function Differ\Differ\Formatters\Stylish\stylish;
+use function Differ\Differ\Formatters\Plain\plain;
+use function Differ\Differ\Formatters\Json\json;
 
 function getFormatter(string $format): callable
 {

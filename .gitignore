@@ -5,3 +5,5 @@ composer.lock
 .idea/
 .vscode/
 .DS_Store
+gendiff-demo.cast
+.env

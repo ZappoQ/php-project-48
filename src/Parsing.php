@@ -1,10 +1,10 @@
 <?php
 
-namespace Differ\Parsing;
+namespace Differ\Differ\Parsing;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseFile(string $filePath): array
+function readFile(string $filePath): string
 {
     if (!file_exists($filePath)) {
         throw new \Exception("File not found: {$filePath}");
@@ -12,27 +12,41 @@ function parseFile(string $filePath): array
 
     $content = file_get_contents($filePath);
 
-    if (isJsonFile($filePath)) {
-        $data = json_decode($content, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception("Invalid JSON in file: {$filePath}");
-        }
-        return $data;
+    if ($content === false) {
+        throw new \Exception("Cannot read file: {$filePath}");
     }
 
-    if (isYamlFile($filePath)) {
-        return Yaml::parse($content);
+    return $content;
+}
+
+function parse(string $content, string $filePath): array
+{
+    $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+
+    if ($extension === 'json') {
+        return parseJson($content, $filePath);
+    }
+
+    if (in_array($extension, ['yml', 'yaml'])) {
+        return parseYaml($content);
     }
 
     throw new \Exception("Unsupported file format: {$filePath}");
 }
 
-function isJsonFile(string $filePath): bool
+function parseJson(string $content, string $filePath): array
 {
-    return strtolower(pathinfo($filePath, PATHINFO_EXTENSION)) === 'json';
+    $data = json_decode($content, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new \Exception("Invalid JSON in file: {$filePath}");
+    }
+
+    return $data ?? [];
 }
 
-function isYamlFile(string $filePath): bool
+function parseYaml(string $content): array
 {
-    return in_array(strtolower(pathinfo($filePath, PATHINFO_EXTENSION)), ['yml', 'yaml']);
+    $data = Yaml::parse($content);
+    return $data ?? [];
 }

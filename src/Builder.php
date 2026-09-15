@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\Builder;
+namespace Differ\Differ\Builder;
 
 function buildTree(array $data1, array $data2): array
 {
@@ -15,21 +15,42 @@ function buildTree(array $data1, array $data2): array
         $value2 = $data2[$key] ?? null;
 
         if ($hasInFirst && $hasInSecond && is_array($value1) && is_array($value2)) {
-            return ['key' => $key, 'type' => 'nested', 'children' => buildTree($value1, $value2)];
+            return [
+                'key' => $key,
+                'type' => 'nested',
+                'children' => buildTree($value1, $value2),
+            ];
         }
 
         if (!$hasInFirst) {
-            return ['key' => $key, 'type' => 'added', 'value' => $value2];
+            return [
+                'key' => $key,
+                'type' => 'added',
+                'value' => $value2,
+            ];
         }
 
         if (!$hasInSecond) {
-            return ['key' => $key, 'type' => 'removed', 'value' => $value1];
+            return [
+                'key' => $key,
+                'type' => 'removed',
+                'value' => $value1,
+            ];
         }
 
         if ($value1 === $value2) {
-            return ['key' => $key, 'type' => 'unchanged', 'value' => $value1];
+            return [
+                'key' => $key,
+                'type' => 'unchanged',
+                'value' => $value1,
+            ];
         }
 
-        return ['key' => $key, 'type' => 'changed', 'oldValue' => $value1, 'newValue' => $value2];
+        return [
+            'key' => $key,
+            'type' => 'changed',
+            'oldValue' => $value1,
+            'newValue' => $value2,
+        ];
     }, $sortedKeys);
 }
